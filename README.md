@@ -6,13 +6,30 @@ Este é um sistema completo para gerenciamento de projetos, desenvolvido com **S
 
 ## 📽️ Demonstração
 
-Veja o projeto em ação:
+- 📷 Veja imagens do projeto em ação:
 
-- 🔗 [Assista ao vídeo demonstrativo](#)
-  _(Substitua pelo link do vídeo no YouTube ou Vimeo)_
-
-- 📷 Ou veja um GIF ou imagem:
-  _(Adicione um GIF ou imagem em `/screenshots` e ajuste o caminho)_
+  <table align="center">
+  <tr>
+    <td align="center">
+      <p><strong>Tela de Login</strong></p>
+      <img src="https://raw.githubusercontent.com/SAIKO9X/project-management/main/screenshots/image1.png" alt="Tela de Login" width="400"/>
+    </td>
+    <td align="center">
+      <p><strong>Dashboard Principal</strong></p>
+      <img src="https://raw.githubusercontent.com/SAIKO9X/project-management/main/screenshots/image2.png" alt="Dashboard de Projetos" width="400"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <p><strong>Página de uma Issue</strong></p>
+      <img src="https://raw.githubusercontent.com/SAIKO9X/project-management/main/screenshots/image3.png" alt="Página de uma Issue" width="400"/>
+    </td>
+    <td align="center">
+      <p><strong>Chat em Tempo Real</strong></p>
+      <img src="https://raw.githubusercontent.com/SAIKO9X/project-management/main/screenshots/image3.png" alt="Chat em Tempo Real" width="400"/>
+    </td>
+  </tr>
+</table>
 
 ---
 
