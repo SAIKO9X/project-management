@@ -2,7 +2,9 @@ package com.project.management.controllers;
 
 import com.project.management.models.entities.Tag;
 import com.project.management.models.entities.User;
+import com.project.management.repositories.ProjectRepository;
 import com.project.management.repositories.TagRepository;
+import com.project.management.response.MessageResponse;
 import com.project.management.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,9 @@ public class TagController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private ProjectRepository projectRepository;
 
   /**
    * Cria uma nova tag personalizada para o usuário autenticado.
@@ -104,7 +109,7 @@ public class TagController {
    * @throws Exception se tag não existir ou usuário não ser o proprietário
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteTag(
+  public ResponseEntity<?> deleteTag(
     @PathVariable Long id,
     @RequestHeader("Authorization") String jwt) throws Exception {
 
@@ -119,6 +124,13 @@ public class TagController {
 
     if (!tag.getOwner().getId().equals(user.getId())) {
       throw new Exception("Você não tem permissão para deletar esta tag");
+    }
+
+    if (projectRepository.existsByTagsId(id)) {
+      return new ResponseEntity<>(
+        new MessageResponse("Esta tag está sendo usada em um ou mais projetos. Remova-a dos projetos antes de deletar."),
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     tagRepository.delete(tag);

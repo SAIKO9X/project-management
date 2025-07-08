@@ -18,4 +18,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
   List<Project> findProjectByTeam(@Param("user") User user);
 
   List<Project> findByTeamContainingOrOwner(User user, User owner);
+
+  boolean existsByTagsId(Long tagId);
+
+  boolean existsByCategoryId(Long categoryId);
 }

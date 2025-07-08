@@ -10,14 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Save, X } from "lucide-react";
+import { useNotify } from "@/utils/notify";
 
 export const CategoryManagement = () => {
   const dispatch = useDispatch();
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [newName, setNewName] = useState("");
+  const notify = useNotify();
   const { userCategories, loading, error } = useSelector(
     (store) => store.project
   );
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [newName, setNewName] = useState("");
 
   useEffect(() => {
     dispatch(fetchUserCategories());
@@ -40,7 +42,20 @@ export const CategoryManagement = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Tem certeza que deseja deletar esta categoria?")) {
-      await dispatch(deleteCategory(id)).unwrap();
+      try {
+        await dispatch(deleteCategory(id)).unwrap();
+        notify({
+          type: "success",
+          message: "Categoria deletada com sucesso!",
+        });
+      } catch (error) {
+        notify({
+          type: "error",
+          message: "Erro ao deletar categoria",
+          description:
+            error || "Ocorreu um erro ao tentar deletar a categoria.",
+        });
+      }
     }
   };
 

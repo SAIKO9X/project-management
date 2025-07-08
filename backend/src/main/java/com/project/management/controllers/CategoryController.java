@@ -3,6 +3,8 @@ package com.project.management.controllers;
 import com.project.management.models.entities.Category;
 import com.project.management.models.entities.User;
 import com.project.management.repositories.CategoryRepository;
+import com.project.management.repositories.ProjectRepository;
+import com.project.management.response.MessageResponse;
 import com.project.management.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,9 @@ public class CategoryController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private ProjectRepository projectRepository;
 
   /**
    * Cria uma nova categoria para o usuário autenticado.
@@ -99,7 +104,7 @@ public class CategoryController {
    * @throws Exception se a categoria não for encontrada, usuário não autenticado ou sem permissão
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCategory(
+  public ResponseEntity<?> deleteCategory(
     @PathVariable Long id,
     @RequestHeader("Authorization") String jwt) throws Exception {
     User user = userService.findUserProfileByJwt(jwt);
@@ -112,6 +117,13 @@ public class CategoryController {
     Category category = optionalCategory.get();
     if (!category.getOwner().getId().equals(user.getId())) {
       throw new Exception("Você não tem permissão para deletar esta categoria");
+    }
+
+    if (projectRepository.existsByCategoryId(id)) {
+      return new ResponseEntity<>(
+        new MessageResponse("Esta categoria está sendo usada em um ou mais projetos. Remova-a dos projetos antes de deletar."),
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     categoryRepository.delete(category);

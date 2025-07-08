@@ -145,7 +145,7 @@ public class ProjectController {
     User user = userService.findUserProfileByJwt(jwt);
     Project project = projectService.getProjectById(projectId);
 
-    if (projectService.isOwner(user, project)) {
+    if (!projectService.isOwner(user, project)) {
       throw new Exception("Apenas o Owner pode deletar o projeto.");
     }
 

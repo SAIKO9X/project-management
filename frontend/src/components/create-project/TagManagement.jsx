@@ -10,12 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Save, X } from "lucide-react";
+import { useNotify } from "@/utils/notify";
 
 export const TagManagement = () => {
   const dispatch = useDispatch();
   const { userTags, loading, error } = useSelector((store) => store.project);
   const [editingTag, setEditingTag] = useState(null);
   const [newName, setNewName] = useState("");
+  const notify = useNotify();
 
   useEffect(() => {
     dispatch(fetchUserTags());
@@ -36,7 +38,19 @@ export const TagManagement = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Tem certeza que deseja deletar esta tag?")) {
-      await dispatch(deleteTag(id)).unwrap();
+      try {
+        await dispatch(deleteTag(id)).unwrap();
+        notify({
+          type: "success",
+          message: "Tag deletada com sucesso!",
+        });
+      } catch (error) {
+        notify({
+          type: "error",
+          message: "Erro ao deletar tag",
+          description: error || "Ocorreu um erro ao tentar deletar a tag.",
+        });
+      }
     }
   };
 
